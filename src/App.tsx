@@ -1,52 +1,36 @@
-import { useState, useEffect, createContext } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar.tsx';
-import Home from './pages/Home.tsx';
-import Patients from './pages/Patients.tsx';
-import Users from './pages/Users.tsx';
-import Admin from './pages/Admin.tsx';
-import Contact from './pages/Contact.tsx';
-import Footer from './components/Footer.tsx';
-// Theme Context
-export const ThemeContext = createContext({
-  theme: 'light',
-  toggleTheme: () => {},
-});
+import { createContext, useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Patients from './pages/Patients';
+import PatientProfile from './pages/PatientProfile';
+import Home from './pages/Home';
 
-const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
-  useEffect(() => {
-    localStorage.setItem('theme', theme);
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  }, [theme]);
+export const ThemeContext = createContext({ theme: 'light', toggleTheme: () => {} });
+
+const App = () => {
+  const [theme, setTheme] = useState('light');
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
+      <BrowserRouter>
+        <div className={theme === 'light' ? 'light' : 'dark'}>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            
+            <Route path="/patients" element={<Patients />} />
+            <Route path="/patients/:id" element={<PatientProfile />} />
+          </Routes>
+          <Footer />
+        </div>
+      </BrowserRouter>
     </ThemeContext.Provider>
-  );
-};
-
-const App = () => {
-  return (
-    <ThemeProvider>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/patients" element={<Patients />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-        <Footer />
-      </Router>
-    </ThemeProvider>
   );
 };
 

@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../App';
 
 // Mock data (replace with API fetch in production)
@@ -13,9 +14,9 @@ const Patients = () => {
   const { theme } = useContext(ThemeContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPatients, setFilteredPatients] = useState(mockPatients);
-  const [selectedPatient, setSelectedPatient] = useState(null);
+  const navigate = useNavigate();
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
     setFilteredPatients(
@@ -67,7 +68,7 @@ const Patients = () => {
                 <tr
                   key={patient.id}
                   className="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-                  onClick={() => setSelectedPatient(patient)}
+                  onClick={() => navigate(`/patients/${patient.id}`)}
                 >
                   <td className="px-6 py-4">{patient.name}</td>
                   <td className="px-6 py-4">{patient.gender}</td>
@@ -92,18 +93,6 @@ const Patients = () => {
             </tbody>
           </table>
         </div>
-
-        {/* Detailed View */}
-        {selectedPatient && (
-          <div className="mt-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold">Patient Profile: {selectedPatient.name}</h2>
-            <p>Gender: {selectedPatient.gender} | Age: {selectedPatient.age}</p>
-            <p>Doctor: {selectedPatient.doctor}</p>
-            <p>Depression: {selectedPatient.depression}% | Stress: {selectedPatient.stress}% | Anxiety: {selectedPatient.anxiety}%</p>
-            <p>Improvement: {selectedPatient.improvement} | Start Date: {selectedPatient.startDate} | EEGs: {selectedPatient.eegCount}</p>
-            <button onClick={() => setSelectedPatient(null)} className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Close</button>
-          </div>
-        )}
       </div>
     </div>
   );
