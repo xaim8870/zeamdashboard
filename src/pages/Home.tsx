@@ -27,7 +27,9 @@ const Home = () => {
           {/* Overall Monitoring Profile */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
             <div className="flex items-center mb-4">
-              <FaHeartbeat className="text-blue-600 dark:text-blue-400 text-3xl mr-3" aria-hidden="true" />
+              <span className="text-blue-600 dark:text-blue-400 text-3xl mr-3">
+                <FaHeartbeat aria-hidden="true" />
+              </span>
               <h2 className="text-xl font-semibold">Overall Monitoring Profile</h2>
             </div>
             <p className="text-gray-600 dark:text-gray-300 mb-4">Mood: Stable | Activity: Moderate</p>
@@ -43,7 +45,9 @@ const Home = () => {
           {/* Identified Events */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
             <div className="flex items-center mb-4">
-              <FaBrain className="text-red-600 dark:text-red-400 text-3xl mr-3" aria-hidden="true" />
+              <span className="text-red-600 dark:text-red-400 text-3xl mr-3">
+                <FaBrain aria-hidden="true" />
+              </span>
               <h2 className="text-xl font-semibold">Identified Events</h2>
             </div>
             <ul className="list-disc pl-5 text-gray-600 dark:text-gray-300 mb-4">
@@ -62,7 +66,9 @@ const Home = () => {
           {/* Biometric Data Details */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
             <div className="flex items-center mb-4">
-              <FaChartLine className="text-green-600 dark:text-green-400 text-3xl mr-3" aria-hidden="true" />
+              <span className="text-green-600 dark:text-green-400 text-3xl mr-3">
+                <FaChartLine aria-hidden="true" />
+              </span>
               <h2 className="text-xl font-semibold">Biometric Data Details</h2>
             </div>
             <p className="text-gray-600 dark:text-gray-300 mb-4">Heart Rate: 72 bpm | Sleep: 7h</p>
@@ -78,7 +84,9 @@ const Home = () => {
           {/* Treatment Response Data */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
             <div className="flex items-center mb-4">
-              <FaNotesMedical className="text-purple-600 dark:text-purple-400 text-3xl mr-3" aria-hidden="true" />
+              <span className="text-purple-600 dark:text-purple-400 text-3xl mr-3">
+                <FaNotesMedical aria-hidden="true" />
+              </span>
               <h2 className="text-xl font-semibold">Treatment Response Data</h2>
             </div>
             <p className="text-gray-600 dark:text-gray-300 mb-4">Effectiveness: 85% | CBT in Progress</p>
@@ -94,7 +102,9 @@ const Home = () => {
           {/* Specialty Treatment Data */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
             <div className="flex items-center mb-4">
-              <FaUserMd className="text-teal-600 dark:text-teal-400 text-3xl mr-3" aria-hidden="true" />
+              <span className="text-teal-600 dark:text-teal-400 text-3xl mr-3">
+                <FaUserMd aria-hidden="true" />
+              </span>
               <h2 className="text-xl font-semibold">Specialty Treatment Data</h2>
             </div>
             <p className="text-gray-600 dark:text-gray-300 mb-4">Nutrition: Balanced | Labs: Normal</p>
@@ -110,7 +120,9 @@ const Home = () => {
           {/* Admin Options */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
             <div className="flex items-center mb-4">
-              <FaCog className="text-gray-600 dark:text-gray-400 text-3xl mr-3" aria-hidden="true" />
+              <span className="text-gray-600 dark:text-gray-400 text-3xl mr-3">
+                <FaCog aria-hidden="true" />
+              </span>
               <h2 className="text-xl font-semibold">Admin Options (Providers)</h2>
             </div>
             <p className="text-gray-600 dark:text-gray-300 mb-4">Manage provider settings and corrections</p>
