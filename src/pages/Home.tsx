@@ -14,122 +14,126 @@ const Home = () => {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-gray-100 to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 text-gray-900 dark:text-white pt-28 pb-16 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Welcome Banner */}
-        <div className="relative bg-gradient-to-r from-blue-600 via-teal-500 to-green-500 dark:from-blue-700 dark:via-teal-600 dark:to-green-700 text-white p-10 rounded-3xl shadow-2xl mb-14 text-center overflow-hidden">
-          <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-          <h1 className="relative text-4xl md:text-5xl font-extrabold tracking-tight z-10 drop-shadow-lg">
-            Health Monitoring Dashboard
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+      {/* Hero Section */}
+      <div className="relative  dark:from-blue-800 dark:to-indigo-800 text-gray-900 dark:text-white py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+            HealthSync Dashboard
           </h1>
-          <p className="relative text-lg mt-3 max-w-2xl mx-auto z-10">
-            Your centralized hub for real-time health insights and patient
-            management
+          <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto opacity-90">
+            Streamline patient care with real-time health insights and advanced monitoring tools
           </p>
-          <img
-            src="https://images.unsplash.com/photo-1576091160550-2173fd1bece7"
-            alt="Health Monitoring Dashboard"
-            className="relative w-full max-w-3xl mx-auto rounded-2xl shadow-xl mt-6 z-10"
-          />
+          <div className="mt-8">
+            <Link
+              to="/dashboard"
+              className="inline-block bg-white text-blue-700 dark:bg-gray-800 dark:text-blue-300 px-6 py-3 rounded-md font-medium shadow-md hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-200"
+            >
+              Explore Dashboard
+            </Link>
+          </div>
         </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent to-black/10"></div>
+      </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Cards Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
-              title: "Overall Monitoring Profile",
-              icon: <FaHeartbeat />,
-              color: "text-blue-600",
+              title: "Monitoring Profile",
+              icon: <FaHeartbeat className="text-3xl" />,
+              color: "text-blue-500",
               link: "/monitoring",
-              desc: "Mood: Stable | Activity: Moderate",
+              desc: "Track mood stability and activity levels in real-time",
             },
             {
-              title: "Identified Events",
-              icon: <FaBrain />,
-              color: "text-red-600",
+              title: "Event Insights",
+              icon: <FaBrain className="text-3xl" />,
+              color: "text-red-500",
               link: "/events",
-              desc: "New Medical Data Available | Signal Breach Detected",
+              desc: "Review new medical data and detected signal breaches",
             },
             {
               title: "AI Scribe (DeepCura)",
-              icon: <FaNotesMedical />,
-              color: "text-indigo-600",
+              icon: <FaNotesMedical className="text-3xl" />,
+              color: "text-indigo-500",
               link: "/ai-scribe",
-              desc: "Generate clinical notes & transcripts for patient visits",
+              desc: "Automate clinical notes and transcripts for patient visits",
             },
             {
-              title: "Biometric Data Details",
-              icon: <FaChartLine />,
-              color: "text-green-600",
+              title: "Biometric Analytics",
+              icon: <FaChartLine className="text-3xl" />,
+              color: "text-green-500",
               link: "/biometric",
-              desc: "Heart Rate: 72 bpm | Sleep: 7h",
+              desc: "Monitor heart rate, sleep patterns, and vital metrics",
             },
             {
-              title: "Treatment Response Data",
-              icon: <FaNotesMedical />,
-              color: "text-purple-600",
+              title: "Treatment Progress",
+              icon: <FaNotesMedical className="text-3xl" />,
+              color: "text-purple-500",
               link: "/treatment",
-              desc: "Effectiveness: 85% | CBT in Progress",
+              desc: "Evaluate treatment effectiveness and therapy progress",
             },
             {
-              title: "Specialty Treatment Data",
-              icon: <FaUserMd />,
-              color: "text-teal-600",
+              title: "Specialty Care",
+              icon: <FaUserMd className="text-3xl" />,
+              color: "text-teal-500",
               link: "/specialty",
-              desc: "Nutrition: Balanced | Labs: Normal",
+              desc: "Access nutrition plans and lab results",
             },
             {
-              title: "Admin Options (Providers)",
-              icon: <FaCog />,
-              color: "text-gray-600",
+              title: "Admin Controls",
+              icon: <FaCog className="text-3xl" />,
+              color: "text-gray-500",
               link: "/admin",
-              desc: "Manage provider settings and corrections",
+              desc: "Manage provider settings and system configurations",
             },
           ].map((card, idx) => (
-            <div
+            <Link
               key={idx}
-              className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 border border-gray-100 dark:border-gray-700 group"
+              to={card.link}
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 group border border-gray-200 dark:border-gray-700"
+              aria-label={`View ${card.title}`}
             >
-              <div className="flex items-center mb-4">
-                <span
-                  className={`${card.color} text-4xl mr-4 group-hover:scale-110 transition-transform`}
-                >
+              <div className="flex items-center gap-4">
+                <span className={`${card.color} group-hover:scale-110 transition-transform duration-200`}>
                   {card.icon}
                 </span>
-                <h2 className="text-xl font-bold">{card.title}</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                  {card.title}
+                </h2>
               </div>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
+              <p className="mt-3 text-gray-600 dark:text-gray-400 text-sm">
                 {card.desc}
               </p>
-              <Link
-                to={card.link}
-                className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 text-white px-5 py-2 rounded-lg shadow hover:from-blue-700 hover:to-blue-600 transition-colors duration-200 font-medium"
-                aria-label={`View ${card.title}`}
-              >
+              <div className="mt-4 text-blue-600 dark:text-blue-400 font-medium group-hover:underline">
                 View Details
-              </Link>
-            </div>
+              </div>
+            </Link>
           ))}
         </div>
+      </div>
 
-        {/* Recent Activity Section */}
-        <div className="mt-16 bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl text-center">
-          <h2 className="text-2xl font-bold mb-3 text-blue-600 dark:text-blue-400">
+      {/* Recent Activity Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8 text-center">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
             Recent Activity
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">
-            Last updated: September 1, 2025, 7:00 PM PKT
+          <p className="mt-2 text-gray-600 dark:text-gray-400">
+            Last updated: October 9, 2025, 7:16 PM PKT
           </p>
-          <div className="flex justify-center gap-4">
+          <div className="mt-6 flex justify-center gap-4">
             <Link
               to="/patients"
-              className="bg-teal-600 text-white px-5 py-2 rounded-lg shadow hover:bg-teal-700 transition-colors duration-200 font-medium"
+              className="bg-blue-600 text-white px-6 py-2 rounded-md shadow hover:bg-blue-700 transition-colors duration-200 font-medium"
             >
               View Patients
             </Link>
             <Link
               to="/dashboard"
-              className="bg-purple-600 text-white px-5 py-2 rounded-lg shadow hover:bg-purple-700 transition-colors duration-200 font-medium"
+              className="bg-indigo-600 text-white px-6 py-2 rounded-md shadow hover:bg-indigo-700 transition-colors duration-200 font-medium"
             >
               View Dashboard
             </Link>

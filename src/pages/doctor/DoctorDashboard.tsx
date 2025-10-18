@@ -1,169 +1,107 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Activity, HeartPulse, UserRound, TrendingUp } from "lucide-react";
+import { getAssignedPatients, getDoctorStats } from "../../services/doctorService";
+import PatientCard from "../../components/doctor/PatientCard";
+import MetricsChart from "../../components/doctor/MetricsChart";
+import NotesTimeline from "../../components/doctor/NotesTimeLine";
 
-// Dummy data
-const appointmentsToday = [
-  { time: "09:00 AM", patient: "John Doe", type: "Follow-up" },
-  { time: "11:30 AM", patient: "Jane Smith", type: "EEG Review" },
-  { time: "02:00 PM", patient: "Robert Brown", type: "Consultation" },
-];
+interface Patient {
+  id: number;
+  name: string;
+  age: number;
+  sessions: number;
+  improvement: number;
+  heartRate: number;
+}
 
-const calendarAppointments = [2, 5, 8, 15, 22]; // Days in the month with appointments
+const DoctorDashboard = () => {
+  const [patients, setPatients] = useState<Patient[]>([]);
+  const [stats, setStats] = useState({ totalPatients: 0, avgImprovement: 0, activeSessions: 0 });
+  const [loading, setLoading] = useState(true);
 
-const patients = [
-  { id: 1, name: "John Doe", age: 34, condition: "Anxiety" },
-  { id: 2, name: "Jane Smith", age: 29, condition: "Depression" },
-  { id: 3, name: "Robert Brown", age: 42, condition: "Stress Disorder" },
-];
+  useEffect(() => {
+    Promise.all([getAssignedPatients(), getDoctorStats()])
+      .then(([patientsData, statsData]) => {
+        setPatients(patientsData);
+        setStats(statsData);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
-const patientProfiles: Record<number, any> = {
-  1: {
-    stress: 70,
-    anxiety: 55,
-    depression: 40,
-    eegs: [
-      { date: "2025-08-20", time: "10:00 AM" },
-      { date: "2025-08-25", time: "02:00 PM" },
-    ],
-  },
-  2: {
-    stress: 50,
-    anxiety: 75,
-    depression: 65,
-    eegs: [{ date: "2025-08-15", time: "01:30 PM" }],
-  },
-  3: {
-    stress: 80,
-    anxiety: 60,
-    depression: 45,
-    eegs: [
-      { date: "2025-08-10", time: "09:00 AM" },
-      { date: "2025-08-28", time: "03:15 PM" },
-    ],
-  },
-};
-
-const DoctorDashboard: React.FC = () => {
-  const [selectedPatient, setSelectedPatient] = useState<number | null>(null);
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-screen text-gray-500">
+        Loading dashboard...
+      </div>
+    );
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 px-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">
-        Doctor Dashboard
-      </h1>
+    <div className="p-6 mt-8 space-y-8 bg-gray-50 dark:bg-gray-900 min-h-screen transition-all">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex justify-between items-center border-b border-gray-300 dark:border-gray-700 pb-3"
+      >
+        <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
+          Welcome, Dr. Usama 👨‍⚕️
+        </h1>
+        <button className="px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 border border-indigo-800">
+          New Observation
+        </button>
+      </motion.div>
 
-      {/* Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Appointments Today */}
-        <div className="bg-white shadow-md rounded-2xl p-6">
-          <h2 className="text-xl font-semibold text-blue-600 mb-4">
-            Today&apos;s Appointments
-          </h2>
-          <ul className="space-y-3">
-            {appointmentsToday.map((appt, idx) => (
-              <li
-                key={idx}
-                className="flex justify-between border-b pb-2 last:border-b-0"
-              >
-                <span className="font-medium">{appt.time}</span>
-                <span>{appt.patient}</span>
-                <span className="text-gray-500 text-sm">{appt.type}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Calendar */}
-        <div className="bg-white shadow-md rounded-2xl p-6">
-          <h2 className="text-xl font-semibold text-green-600 mb-4">
-            Appointment Calendar
-          </h2>
-          <div className="grid grid-cols-7 gap-2 text-center">
-            {Array.from({ length: 30 }, (_, i) => i + 1).map((day) => (
-              <div
-                key={day}
-                className={`p-2 rounded-lg ${
-                  calendarAppointments.includes(day)
-                    ? "bg-green-100 border border-green-500 font-bold"
-                    : "bg-gray-100"
-                }`}
-              >
-                {day}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Assigned Patients */}
-        <div className="bg-white shadow-md rounded-2xl p-6">
-          <h2 className="text-xl font-semibold text-purple-600 mb-4">
-            Assigned Patients
-          </h2>
-          <ul className="space-y-3">
-            {patients.map((patient) => (
-              <li
-                key={patient.id}
-                className="flex justify-between items-center border-b pb-2 last:border-b-0"
-              >
-                <div>
-                  <p className="font-medium">{patient.name}</p>
-                  <p className="text-sm text-gray-500">
-                    {patient.age} yrs — {patient.condition}
-                  </p>
-                </div>
-                <button
-                  onClick={() => setSelectedPatient(patient.id)}
-                  className="px-3 py-1 bg-purple-500 text-white rounded-lg hover:bg-purple-600"
-                >
-                  View
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <StatCard
+          icon={<UserRound className="w-6 h-6 text-indigo-600" />}
+          title="Assigned Patients"
+          value={stats.totalPatients}
+        />
+        <StatCard
+          icon={<TrendingUp className="w-6 h-6 text-green-600" />}
+          title="Avg Improvement"
+          value={`${stats.avgImprovement}%`}
+        />
+        <StatCard
+          icon={<Activity className="w-6 h-6 text-pink-600" />}
+          title="Active EEG Sessions"
+          value={stats.activeSessions}
+        />
       </div>
 
-      {/* Patient Profile */}
-      {selectedPatient && (
-        <div className="mt-10 bg-white shadow-lg rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            Patient Profile — {patients.find((p) => p.id === selectedPatient)?.name}
-          </h2>
+      {/* Patient Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {patients.map((p) => (
+          <PatientCard key={p.id} patient={p} />
+        ))}
+      </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="bg-blue-100 p-4 rounded-xl text-center">
-              <p className="text-lg font-semibold">Stress</p>
-              <p className="text-2xl font-bold">
-                {patientProfiles[selectedPatient].stress}%
-              </p>
-            </div>
-            <div className="bg-green-100 p-4 rounded-xl text-center">
-              <p className="text-lg font-semibold">Anxiety</p>
-              <p className="text-2xl font-bold">
-                {patientProfiles[selectedPatient].anxiety}%
-              </p>
-            </div>
-            <div className="bg-red-100 p-4 rounded-xl text-center">
-              <p className="text-lg font-semibold">Depression</p>
-              <p className="text-2xl font-bold">
-                {patientProfiles[selectedPatient].depression}%
-              </p>
-            </div>
-          </div>
-
-          <h3 className="text-xl font-semibold mb-3">EEG History</h3>
-          <ul className="list-disc list-inside space-y-2">
-            {patientProfiles[selectedPatient].eegs.map(
-              (eeg: { date: string; time: string }, idx: number) => (
-                <li key={idx} className="text-gray-700">
-                  {eeg.date} — {eeg.time}
-                </li>
-              )
-            )}
-          </ul>
-        </div>
-      )}
+      {/* Metrics + Timeline */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-10">
+        <MetricsChart />
+        <NotesTimeline />
+      </div>
     </div>
   );
 };
+
+// ✅ Stat Card (Square-edged version)
+const StatCard = ({ icon, title, value }: any) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="flex items-center gap-4 p-5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 shadow-sm"
+  >
+    <div className="p-3 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600">
+      {icon}
+    </div>
+    <div>
+      <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{value}</h2>
+    </div>
+  </motion.div>
+);
 
 export default DoctorDashboard;

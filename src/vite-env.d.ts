@@ -19,3 +19,15 @@ declare module '*.svg' {
 }
 
 // Add more extensions if needed (e.g., '*.gif', '*.webp')
+
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_API_URL: string;
+  // Add more variables as needed, for example:
+  // readonly VITE_BACKEND_KEY: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
