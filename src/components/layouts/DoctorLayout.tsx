@@ -2,7 +2,14 @@ import { Outlet, NavLink } from "react-router-dom";
 import { FiTriangle } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
-import { LayoutDashboard, Users, FileText, LogOut } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  FileText,
+  LogOut,
+  Brain,
+  Bot,
+} from "lucide-react";
 import { useContext } from "react";
 import { ThemeContext } from "../../App";
 
@@ -11,9 +18,9 @@ export default function DoctorLayout() {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-64 border-r border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col justify-between">
+      <aside className="w-64 border-r border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col justify-between fixed top-0 left-0 h-full">
         <div>
           {/* Brand Header */}
           <div className="flex items-center justify-center gap-2 py-6 border-b border-gray-300 dark:border-gray-700">
@@ -33,47 +40,32 @@ export default function DoctorLayout() {
 
           {/* Navigation Links */}
           <nav className="mt-6 space-y-1">
-            <NavLink
+            <DoctorNavLink
               to="/doctor/dashboard"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-6 py-3 text-sm font-medium border-l-4 transition-all ${
-                  isActive
-                    ? "border-emerald-700 bg-emerald-50 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300"
-                    : "border-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                }`
-              }
-            >
-              <LayoutDashboard className="w-4 h-4" />
-              Dashboard
-            </NavLink>
-
-            <NavLink
+              icon={<LayoutDashboard />}
+              label="Dashboard"
+            />
+            <DoctorNavLink
               to="/doctor/mypatients"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-6 py-3 text-sm font-medium border-l-4 transition-all ${
-                  isActive
-                    ? "border-emerald-700 bg-emerald-50 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300"
-                    : "border-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                }`
-              }
-            >
-              <Users className="w-4 h-4" />
-              My Patients
-            </NavLink>
-
-            <NavLink
+              icon={<Users />}
+              label="My Patients"
+            />
+            <DoctorNavLink
+              to="/doctor/eeg"
+              icon={<Brain />}
+              label="EEG Sessions"
+            />
+            {/* 🔹 New DeepCura AI Page */}
+            <DoctorNavLink
+              to="/doctor/deepcura"
+              icon={<Bot />}
+              label="DeepCura AI"
+            />
+            <DoctorNavLink
               to="/doctor/reports"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-6 py-3 text-sm font-medium border-l-4 transition-all ${
-                  isActive
-                    ? "border-emerald-700 bg-emerald-50 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300"
-                    : "border-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                }`
-              }
-            >
-              <FileText className="w-4 h-4" />
-              Reports
-            </NavLink>
+              icon={<FileText />}
+              label="Reports"
+            />
           </nav>
         </div>
 
@@ -88,10 +80,10 @@ export default function DoctorLayout() {
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 p-6">
+      {/* Main Content (scrollable) */}
+      <main className="flex-1 ml-64 h-screen overflow-y-auto p-6">
         {/* Top Header */}
-        <header className="mb-6 border-b border-gray-300 dark:border-gray-700 pb-3 flex justify-between items-center">
+        <header className="mb-6 border-b border-gray-300 dark:border-gray-700 pb-3 flex justify-between items-center sticky top-0 bg-gray-50 dark:bg-gray-900 z-10">
           <h2 className="text-2xl font-semibold">
             Welcome, {user?.name || "Doctor"}
           </h2>
@@ -100,9 +92,38 @@ export default function DoctorLayout() {
           </span>
         </header>
 
-        {/* Content Outlet */}
+        {/* Routed Pages */}
         <Outlet />
       </main>
     </div>
+  );
+}
+
+/* ===============================
+   Subcomponent for cleaner NavLinks
+================================= */
+function DoctorNavLink({
+  to,
+  icon,
+  label,
+}: {
+  to: string;
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        `flex items-center gap-2 px-6 py-3 text-sm font-medium border-l-4 transition-all ${
+          isActive
+            ? "border-emerald-700 bg-emerald-50 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300"
+            : "border-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+        }`
+      }
+    >
+      {icon}
+      {label}
+    </NavLink>
   );
 }

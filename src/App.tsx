@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Existing pages
 import Patients from "./pages/Patients";
-import PatientProfile from "./pages/PatientProfile";
+
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import ZeamBot from "./pages/ZeamBot";
@@ -33,6 +33,9 @@ import StaffPatients from "./pages/staff/Patients";
 import DoctorDashboard from "./pages/doctor/DoctorDashboard";
 import DoctorMyPatients from "./pages/doctor/MyPatients";
 import DoctorReports from "./pages/doctor/Reports";
+import DoctorPatientProfile from "./pages/doctor/PatientProfile";
+import DoctorEEGPage from "./pages/doctor/EEGPage";
+import DeepCura from "./pages/doctor/DeepCura";
 
 import AdminDashboard from "./pages/admin/Dashboard";
 import ManageUsers from "./pages/admin/ManageUsers";
@@ -61,7 +64,7 @@ const AppContent = () => {
         <Route path="/home" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="patients" element={<Patients />} />
-          <Route path="patients/:id" element={<PatientProfile />} />
+          
           <Route path="zeambot" element={<ZeamBot />} />
           <Route path="monitoring" element={<Monitoring />} />
           <Route path="events" element={<Events />} />
@@ -82,6 +85,12 @@ const AppContent = () => {
           <Route path="dashboard" element={<DoctorDashboard />} />
           <Route path="mypatients" element={<DoctorMyPatients />} />
           <Route path="reports" element={<DoctorReports />} />
+          <Route path="patient/:id" element={<DoctorPatientProfile />} />
+          <Route path="eeg" element={<DoctorEEGPage />} /> {/* ✅ new EEG page */}
+          <Route path="/doctor/deepcura" element={<DeepCura />} />
+
+
+
         </Route>
 
         <Route path="/admin" element={<AdminLayout />}>
