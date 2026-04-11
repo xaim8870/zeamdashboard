@@ -4,6 +4,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Existing pages
 import Patients from "./pages/Patients";
+// Admin Role Pages
+import MentalabIntegration from "./pages/admin/MentalabIntegration";
+import Devices from "./pages/admin/Devices";
+import ResearchProtocols from "./pages/admin/ResearchProtocols";
+import EEGSessions from "./pages/admin/EEGSessions";
+import DoctorProfile from "./pages/admin/DoctorProfile";
+import StaffProfile from "./pages/admin/StaffProfile";
+import UserProfile from "./pages/admin/UserProfile"; // for generic/patient profile if needed
 
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
@@ -93,11 +101,22 @@ const AppContent = () => {
 
         </Route>
 
-        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="manage-users" element={<ManageUsers />} />
           <Route path="settings" element={<AdminSettings />} />
-        </Route>
+          <Route path="mentalab" element={<MentalabIntegration />} />
+          <Route path="devices" element={<Devices />} />
+          <Route path="protocols" element={<ResearchProtocols />} />
+          <Route path="eeg-sessions" element={<EEGSessions />} />
+
+  {/* New user profile routes */}
+  <Route path="doctor/:id" element={<DoctorProfile />} />
+  <Route path="staff/:id" element={<StaffProfile />} />
+  <Route path="admin/:id" element={<UserProfile />} />
+</Route>
+
       </Routes>
 
       {!hideNavAndFooter && <Footer />}

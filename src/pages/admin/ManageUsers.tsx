@@ -1,11 +1,24 @@
 import { useState } from "react";
-import { Edit3, Trash2, Shield, Plus, UserPlus, Mail, Lock } from "lucide-react";
+import {
+  Edit3,
+  Trash2,
+  Shield,
+  Plus,
+  UserPlus,
+  Mail,
+  Lock,
+  Eye,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function ManageUsers() {
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState<"doctor" | "staff" | "admin">("doctor");
   const [showForm, setShowForm] = useState(false);
   const [newUser, setNewUser] = useState({ name: "", email: "", password: "" });
 
+  // Mock data (later replace with API)
   const users = {
     doctor: [
       { id: 1, name: "Dr. Usama", email: "usama@zeamhealth.com" },
@@ -15,30 +28,35 @@ export default function ManageUsers() {
       { id: 1, name: "Ali Raza", email: "ali@zeamhealth.com" },
       { id: 2, name: "Zain Malik", email: "zain@zeamhealth.com" },
     ],
-    admin: [
-      { id: 1, name: "Admin Ahsan", email: "ahsan@zeamhealth.com" },
-    ],
+    admin: [{ id: 1, name: "Admin Ahsan", email: "ahsan@zeamhealth.com" }],
   };
 
   const handleAddUser = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newUser.name || !newUser.email || !newUser.password) {
-      alert("Please fill all fields before saving.");
+      alert("⚠️ Please fill all fields before saving.");
       return;
     }
+
     alert(`${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} added successfully!`);
     setNewUser({ name: "", email: "", password: "" });
     setShowForm(false);
   };
 
+  const handleDelete = (name: string) => {
+    const confirmDelete = window.confirm(`Are you sure you want to delete ${name}?`);
+    if (confirmDelete) alert(`${name} deleted successfully!`);
+  };
+
   return (
-    <div className="p-8 bg-gray-50 dark:bg-gray-900 min-h-screen text-gray-800 dark:text-gray-100">
+    <div className="p-8 bg-gray-50 dark:bg-gray-900 min-h-screen text-gray-800 dark:text-gray-100 transition-all">
       {/* Header */}
       <div className="border-b border-gray-300 dark:border-gray-700 mb-8 pb-3 flex flex-col md:flex-row justify-between items-start md:items-center">
-        <h1 className="text-3xl font-bold text-emerald-700 dark:text-emerald-400">
+        <h1 className="text-3xl font-bold text-emerald-700 dark:text-emerald-400 tracking-wide">
           Manage Users
         </h1>
 
+        {/* Tabs */}
         <div className="flex gap-3 mt-3 md:mt-0">
           {["doctor", "staff", "admin"].map((tab) => (
             <button
@@ -47,9 +65,9 @@ export default function ManageUsers() {
                 setActiveTab(tab as "doctor" | "staff" | "admin");
                 setShowForm(false);
               }}
-              className={`px-4 py-2 border text-sm font-medium uppercase tracking-wide ${
+              className={`px-4 py-2 border text-sm font-medium uppercase tracking-wide  transition ${
                 activeTab === tab
-                  ? "bg-emerald-700 text-white border-emerald-800"
+                  ? "bg-emerald-700 text-white border-emerald-800 shadow-md"
                   : "bg-transparent border-gray-400 text-gray-700 dark:text-gray-300 hover:bg-emerald-100 dark:hover:bg-gray-800"
               }`}
             >
@@ -63,9 +81,10 @@ export default function ManageUsers() {
       <div className="flex justify-end mb-4">
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-4 py-2 border border-emerald-700 text-emerald-700 hover:bg-emerald-700 hover:text-white transition"
+          className="flex items-center gap-2 px-4 py-2 border border-emerald-700 text-emerald-700 hover:bg-emerald-700 hover:text-white transition "
         >
-          <Plus className="w-4 h-4" /> Add {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+          <Plus className="w-4 h-4" />
+          {showForm ? "Cancel" : `Add ${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}`}
         </button>
       </div>
 
@@ -73,7 +92,7 @@ export default function ManageUsers() {
       {showForm && (
         <form
           onSubmit={handleAddUser}
-          className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm p-6 mb-8"
+          className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md p-6 mb-8  transition"
         >
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
             <UserPlus className="w-5 h-5" /> Add New {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
@@ -82,7 +101,7 @@ export default function ManageUsers() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-semibold mb-2">Full Name</label>
-              <div className="flex items-center border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-2">
+              <div className="flex items-center border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-2 ">
                 <Shield className="w-4 h-4 text-emerald-700 mr-2" />
                 <input
                   type="text"
@@ -96,7 +115,7 @@ export default function ManageUsers() {
 
             <div>
               <label className="block text-sm font-semibold mb-2">Email</label>
-              <div className="flex items-center border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-2">
+              <div className="flex items-center border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-2 ">
                 <Mail className="w-4 h-4 text-emerald-700 mr-2" />
                 <input
                   type="email"
@@ -110,7 +129,7 @@ export default function ManageUsers() {
 
             <div>
               <label className="block text-sm font-semibold mb-2">Password</label>
-              <div className="flex items-center border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-2">
+              <div className="flex items-center border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-2 ">
                 <Lock className="w-4 h-4 text-emerald-700 mr-2" />
                 <input
                   type="password"
@@ -126,7 +145,7 @@ export default function ManageUsers() {
           <div className="flex justify-end mt-6">
             <button
               type="submit"
-              className="px-5 py-2 border border-emerald-700 text-emerald-700 hover:bg-emerald-700 hover:text-white transition"
+              className="px-5 py-2 border border-emerald-700 text-emerald-700 hover:bg-emerald-700 hover:text-white transition "
             >
               Save {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
             </button>
@@ -135,7 +154,7 @@ export default function ManageUsers() {
       )}
 
       {/* User Table */}
-      <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
+      <div className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md  overflow-hidden">
         <table className="w-full text-left border-collapse">
           <thead className="bg-gray-100 dark:bg-gray-700 border-b border-gray-300 dark:border-gray-600">
             <tr>
@@ -158,12 +177,23 @@ export default function ManageUsers() {
                 <td className="py-3 px-4 text-sm">{user.id}</td>
                 <td className="py-3 px-4 text-sm font-medium">{user.name}</td>
                 <td className="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">{user.email}</td>
-                <td className="py-3 px-4 text-center">
-                  <button className="text-xs px-3 py-1 border border-emerald-700 text-emerald-700 hover:bg-emerald-700 hover:text-white mr-2 transition">
-                    <Edit3 className="inline-block w-3 h-3 mr-1" /> Edit
+                <td className="py-3 px-4 text-center flex justify-center gap-2">
+                  <button
+                    onClick={() => navigate(`/admin/${activeTab}/${user.id}`)}
+                    className="text-xs px-3 py-1 border border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white transition  flex items-center"
+                  >
+                    <Eye className="w-3 h-3 mr-1" /> View
                   </button>
-                  <button className="text-xs px-3 py-1 border border-red-700 text-red-700 hover:bg-red-700 hover:text-white transition">
-                    <Trash2 className="inline-block w-3 h-3 mr-1" /> Delete
+
+                  <button className="text-xs px-3 py-1 border border-emerald-700 text-emerald-700 hover:bg-emerald-700 hover:text-white transition  flex items-center">
+                    <Edit3 className="w-3 h-3 mr-1" /> Edit
+                  </button>
+
+                  <button
+                    onClick={() => handleDelete(user.name)}
+                    className="text-xs px-3 py-1 border border-red-700 text-red-700 hover:bg-red-700 hover:text-white transition flex items-center"
+                  >
+                    <Trash2 className="w-3 h-3 mr-1" /> Delete
                   </button>
                 </td>
               </tr>

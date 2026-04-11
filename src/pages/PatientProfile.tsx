@@ -29,12 +29,12 @@ const PatientProfile = () => {
     pms: '',
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     // TODO: Feed formData to AI model for insights (e.g., API call)
     console.log('Submitted Data:', formData);
