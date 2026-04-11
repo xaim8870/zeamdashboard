@@ -1,6 +1,6 @@
 import type { ProcessMentalabResponse } from "../types/eeg";
 
-const API_BASE = "http://localhost:5000"; // link of the port where backend is running
+const API_BASE = "https://compass-zeam-backend.onrender.com"; // link of the port where backend is running
 
 export async function processMentalabSession(
   formData: FormData
